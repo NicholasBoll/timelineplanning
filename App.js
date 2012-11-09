@@ -8,6 +8,7 @@ Ext.define('CustomApp', {
         this.timelineStore = Ext.create('Timeline.data.store.Timeline');
 
         var comboBox = Ext.widget('combobox', {
+            fieldLabel: 'Choose Timeline',
             displayField: 'name',
             valueField: 'id',
             store: this.timelineStore,
@@ -49,7 +50,7 @@ Ext.define('CustomApp', {
         var columns = [{
             displayValue: 'Backlog'
         }];
-        
+
         Ext.Array.each(timeframes, function (timeframe, index) {
             columns.push({
                 displayValue: timeframe.get('name'),
