@@ -1,0 +1,13 @@
+{
+    "name": "MyApp",
+    "className": "CustomApp",
+    "sdk": "2.0p5",
+    "javascript": [
+    	"data/TimelineModels.js",
+    	"PlanningColumn.js",
+        "App.js"
+    ],
+    "css": [
+        "app.css"
+    ]
+}
