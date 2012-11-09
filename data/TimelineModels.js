@@ -93,11 +93,12 @@ Ext.define('Timeline.data.store.Timeline', {
     fields: [
         { name: 'id', type: 'string' },
         { name: 'name', type: 'string' },
-        { name: 'capacity', type: 'int' }
+        { name: 'capacity', type: 'int' },
+        { name: 'timeframe' }
     ],
 
     hasOne: {
-        name: 'timeframe',
+        associationKey: 'timeframe',
         model: 'Timeline.data.store.Timeframe',
         foreignKey: 'timeframe'
     }

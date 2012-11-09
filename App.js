@@ -23,42 +23,44 @@ Ext.define('CustomApp', {
 
     selectedTimeline: function (combobox, records, options) {
         var timeline = records.shift(),
-            columns = timeline,
-            timeframeStore = Ext.create('Timeline.data.store.Timeframe');
+            columns = timeline;
 
-        timeframeStore.load({
+        this.timeframeStore = Ext.create('Timeline.data.store.Timeframe');
+
+        this.timeframeStore.load({
             params: {
                 group: timeline.get('id')
             }
         });
 
-        timeframeStore.mon(timeframeStore, 'datachanged', this.buildCardboard, this);
+        this.timeframeStore.mon(this.timeframeStore, 'datachanged', this.fetchedPlans, this);
         this.setLoading(true);
     },
 
     fetchedPlans: function (store) {
-        var planningStore = Ext.create('Planning.data.store.Plan');
+        this.planningStore = Ext.create('Planning.data.store.Plan');
 
-        planningStore.load();
+        this.planningStore.load();
 
-        planningStore.mon(planningStore, 'datachanged', this.buildCardboard, this);
+        this.planningStore.mon(this.planningStore, 'datachanged', this.buildCardboard, this);
     },
 
     buildCardboard: function (store) {
         this.setLoading(false);
-        var timeframes = store.getRange();
+        var plans = store.getRange();
         var columns = [{
             displayValue: 'Backlog'
         }];
 
-        Ext.Array.each(timeframes, function (timeframe, index) {
+        Ext.Array.each(plans, function (plan, index) {
+            var timeframe = this.timeframeStore.findRecord('id', plan.get('timeframe'));
             columns.push({
                 displayValue: timeframe.get('name'),
                 startDate: timeframe.get('start'),
                 endDate: timeframe.get('end'),
-                capacity: timeframe.get('capacity')
+                capacity: plan.get('capacity')
             });
-        });
+        }, this);
 
         var cardboard = Ext.widget('rallycardboard', {
             types: 'PortfolioItem/Feature',
